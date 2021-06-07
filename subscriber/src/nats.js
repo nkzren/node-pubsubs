@@ -9,9 +9,14 @@ module.exports = function natsInit(mongoClient) {
   connection.on("connect", () => {
     console.log("Conectado ao NATS Streaming");
 
+    const collectionName = "pedido"
+
+    const db = mongoClient.db().collection(collectionName);
+
     const pedidoSub = connection.subscribe("PEDIDO_REALIZADO");
     pedidoSub.on("message", async (message) => {
       const pedido = JSON.parse(message.getData());
+      await db.insertOne(pedido);
 
       console.log(`Pedido recebido no subscriber: ${JSON.stringify(pedido)}`);
     });
