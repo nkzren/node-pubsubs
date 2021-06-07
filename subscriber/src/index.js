@@ -1,5 +1,6 @@
 const API = require("./api");
 const brokerClient = require("./nats");
+const mongoClient = require("./mongo");
 
 const PORT = 3000;
 const ALLOWED_ORIGINS = JSON.parse("[]");
@@ -16,7 +17,9 @@ const corsOptions = {
 
 async function main() {
   try {
-    const stanConnection = brokerClient();
+    const mongoClient = await mongoClient.connect();
+
+    const stanConnection = brokerClient(mongoClient);
 
     const context = { stanConnection };
 

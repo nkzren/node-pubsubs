@@ -17,3 +17,9 @@ services:
     build: ./subscriber
     depends_on: 
       - "broker"
+      - "subscriber_db"
+  subscriber_db:
+    image: mongo
+    volume: /tmp/data:/data/db
+    port:
+    - 27018:27017
