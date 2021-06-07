@@ -13,7 +13,7 @@ module.exports = function natsInit() {
     pedidoSub.on("message", async (message) => {
       const pedido = JSON.parse(message.getData());
 
-      console.log(`Pedido recebido no subscriber: ${pedido}`);
+      console.log(`Pedido recebido no subscriber: ${JSON.stringify(pedido)}`);
     });
   });
 

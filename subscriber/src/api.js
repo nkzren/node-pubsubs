@@ -6,7 +6,7 @@ const validatePedido = (req, res, next) => {
   const body = req.body;
 
   if (!body.nome) {
-    response.status(400).json({
+    res.status(400).json({
       success: false,
       message: "Pedido sem nome"
     });
