@@ -16,8 +16,9 @@ const validatePedido = (req, res, next) => {
 
 }
 
-module.exports = function (corsOptions, { stanConnection }) {
+module.exports = function (corsOptions, { stanConnection, mongoClient }) {
   const api = express();
+  const pedidosCollection = mongoClient.db().collection('pedido');
 
   api.use(express.json());
   api.use(cors(corsOptions));
@@ -25,6 +26,18 @@ module.exports = function (corsOptions, { stanConnection }) {
   api.get('/', (req, res) => {
     res.send('Tapioca');
   });
+
+  api.get('/pedido', async (req, res) => {
+    const pedidos = await pedidosCollection.find({}).toArray();
+
+    const pedidosFormatado = pedidos.map(e => {
+      return {
+        nome: e.nome,
+        valor: e.valor
+      }
+    });
+    res.json(pedidosFormatado);
+  })
 
   return api;
 }

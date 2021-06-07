@@ -15,6 +15,8 @@ services:
   subscriber:
     image: "nkzren/subscriber"
     build: ./subscriber
+    ports:
+      - 3001:3000
     depends_on: 
       - "broker"
       - "subscriber_db"

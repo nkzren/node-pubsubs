@@ -22,7 +22,7 @@ async function main() {
 
     const stanConnection = brokerClient(mongoClient);
 
-    const context = { stanConnection };
+    const context = { stanConnection, mongoClient };
 
     const api = API(corsOptions, context);
 
