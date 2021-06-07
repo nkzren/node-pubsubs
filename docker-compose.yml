@@ -20,6 +20,7 @@ services:
       - "subscriber_db"
   subscriber_db:
     image: mongo
-    volume: /tmp/data:/data/db
-    port:
+    volumes: 
+      - /tmp/data:/data/db
+    ports:
     - 27018:27017

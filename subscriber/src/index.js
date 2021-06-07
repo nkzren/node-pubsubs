@@ -17,7 +17,8 @@ const corsOptions = {
 
 async function main() {
   try {
-    const mongoClient = await mongoClient.connect();
+    await mongoClient.connect();
+    console.log("Conectado ao MongoDB");
 
     const stanConnection = brokerClient(mongoClient);
 
