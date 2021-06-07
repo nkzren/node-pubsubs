@@ -1,0 +1,19 @@
+version: "3.9"
+
+services: 
+  broker: 
+    image: nats-streaming:0.21.2-alpine3.13
+    ports:
+      - 4222:4222
+  publisher:
+    image: "nkzren/publisher"
+    build: ./publisher
+    ports:
+      - 3000:3000
+    depends_on: 
+      - "broker"
+  subscriber:
+    image: "nkzren/subscriber"
+    build: ./subscriber
+    depends_on: 
+      - "broker"
