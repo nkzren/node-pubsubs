@@ -3,8 +3,10 @@ const stan = require("node-nats-streaming");
 
 module.exports = function natsInit() {
   const connection = stan.connect("test-cluster", "test-publisher", {
-    url: "nats://broker:4222"
+    url: `nats://${process.env.BROKER_URL}:4222`
   });
+
+  console.log(`Trying to connect to broker on url: ${process.env.BROKER_URL}`);
 
   connection.on("connect", () => {
     console.log("Conectado ao NATS Streaming");

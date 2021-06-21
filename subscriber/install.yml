@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscriber
+  labels:
+    app: subscriber
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: subscriber
+  template:
+    metadata:
+      labels:
+        app: subscriber
+    spec:
+      containers:
+      - name: node-subscriber
+        image: nkzren/node-subscriber
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MONGO_URL
+          valueFrom:
+            configMapKeyRef:
+              name: subscriber-config
+              key: mongo_url
+      volumes: 
+      - name: data
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: subscriber-db-service
+spec:
+  selector:
+    app: subscriber-db
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscriber-db
+  labels:
+    app: subscriber-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subscriber-db
+  template:
+    metadata:
+      labels:
+        app: subscriber-db
+    spec:
+      containers:
+      - name: subscriber-db
+        image: mongo
+        volumeMounts:
+          - mountPath: /tmp/pubsubsdata
+            name: mongo-data
+        ports:
+        - containerPort: 27017
+      volumes: 
+      - name: mongo-data
+        hostPath:
+          path: /tmp/pubsubsdata
+          type: DirectoryOrCreate
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-data
+spec:
+  capacity:
+    storage: 50Mi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: /tmp/pubsubsdata
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - subscriber-db
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: subscriber-config
+data:
+  mongo_url: "10.101.236.202"

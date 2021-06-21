@@ -3,7 +3,7 @@ const stan = require("node-nats-streaming");
 
 module.exports = function natsInit(mongoClient) {
   const connection = stan.connect("test-cluster", "test-subscriber", {
-    url: "nats://broker:4222",
+    url: `nats://${process.env.BROKER_URL}:4222`,
   });
 
   connection.on("connect", () => {

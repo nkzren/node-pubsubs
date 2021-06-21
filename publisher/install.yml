@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: publisher
+  labels:
+    app: publisher
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: publisher
+  template:
+    metadata:
+      labels:
+        app: publisher
+    spec:
+      containers:
+      - name: node-publisher
+        image: nkzren/node-publisher
+        ports:
+        - containerPort: 3000
+        env:
+        - name: BROKER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: broker-config
+              key: broker_url

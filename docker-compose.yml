@@ -12,11 +12,16 @@ services:
       - 3000:3000
     depends_on: 
       - "broker"
+    environment:
+      - BROKER_URL=broker
   subscriber:
     image: "nkzren/subscriber"
     build: ./subscriber
     ports:
       - 3001:3000
+    environment:
+      - MONGO_URL=subscriber_db
+      - BROKER_URL=broker
     depends_on: 
       - "broker"
       - "subscriber_db"
@@ -25,4 +30,4 @@ services:
     volumes: 
       - /tmp/data:/data/db
     ports:
-    - 27018:27017
+    - 27017:27017

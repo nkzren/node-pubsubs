@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broker
+  labels:
+    app: broker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: broker
+  template:
+    metadata:
+      labels:
+        app: broker
+    spec:
+      containers:
+      - name: nats-streaming
+        image: nats-streaming:0.21.2-alpine3.13
+        ports:
+        - containerPort: 4222
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker-service
+spec:
+  selector:
+    app: broker
+  ports:
+    - protocol: TCP
+      port: 4222
+      targetPort: 4222
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: broker-config
+data:
+  broker_url: "10.109.79.65"
