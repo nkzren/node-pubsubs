@@ -25,6 +25,11 @@ spec:
             configMapKeyRef:
               name: subscriber-config
               key: mongo_url
+        - name: BROKER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: broker-config
+              key: broker_url
       volumes: 
       - name: data
 ---
