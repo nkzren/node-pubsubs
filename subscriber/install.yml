@@ -27,6 +27,19 @@ spec:
               key: mongo_url
       volumes: 
       - name: data
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: subscriber-service
+spec:
+  selector:
+    app: subscriber
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
 
 ---
 
