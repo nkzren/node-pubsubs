@@ -106,4 +106,4 @@ kind: ConfigMap
 metadata:
   name: subscriber-config
 data:
-  mongo_url: "10.101.236.202"
+  mongo_url: "10.100.145.30"
