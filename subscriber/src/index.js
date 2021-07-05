@@ -17,6 +17,7 @@ const corsOptions = {
 
 async function main() {
   try {
+    console.log(`Conectando ao MongoDB na URL: ${process.env.MONGO_URL}`);
     await mongoClient.connect();
     console.log("Conectado ao MongoDB");
 

@@ -72,3 +72,10 @@ spec:
                 name: publisher-service
                 port:
                   number: 3000
+          - path: /subscriber(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: subscriber-service
+                port:
+                  number: 3000
