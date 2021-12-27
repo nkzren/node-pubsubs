@@ -5,7 +5,7 @@ const PORT = 3000;
 const ALLOWED_ORIGINS = JSON.parse("[]");
 
 const corsOptions = {
-  origin: (origin, callback) => {
+  origin: (origin: string, callback: Function) => {
     if (ALLOWED_ORIGINS.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
