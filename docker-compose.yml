@@ -2,7 +2,7 @@ version: "3.9"
 
 services: 
   broker: 
-    image: nats-streaming:0.21.2-alpine3.13
+    image: nats-streaming
     ports:
       - 4222:4222
   publisher:
